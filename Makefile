@@ -1,4 +1,4 @@
-demo.html: lpa.svg demo.py var/organisation.csv
+index.html: lpa.svg demo.py var/organisation.csv
 	python3 demo.py > $@
 
 lpa.svg: var/lpa.svg Makefile svgo.js
