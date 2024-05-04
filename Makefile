@@ -7,14 +7,17 @@ lpa.svg: var/lpa.svg Makefile svgo.js
 var/lpa.svg:  var/lpa.geojson Makefile
 	svgis draw var/lpa.geojson --id-field reference --crs EPSG:3857 --scale 2000 -o $@
 
-var/lpa.geojson: var/lpa-uk.geojson filter.py
-	python3 filter.py < var/lpa-uk.geojson > $@
+var/lpa.geojson: var/lpa-eng.geojson filter.py
+	python3 filter.py < var/lpa-eng.geojson > $@
+
+var/lpa-eng.geojson: var/lpa-uk.geojson
+	ogr2ogr -simplify 0.01 $@ var/lpa-uk.geojson
 
 # uses ONS version, for now
 # move to use the planning.data.gov.uk dataset, with historical areas
 var/lpa-uk.geojson:
 	@mkdir -p var
-	curl -qfsL "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Planning_Authorities_April_2023_Boundaries_UK_BUC/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson" > $@
+	curl -qfsL "https://files.planning.data.gov.uk/dataset/local-planning-authority.geojson" > $@
 
 init::
 	pip install -r requirements.txt
@@ -22,6 +25,9 @@ init::
 
 clobber::
 	rm -f lpa.svg
+
+clean::
+	rm -rf ./var
 
 # local copy of organsiation datapackage
 var/organisation.csv:

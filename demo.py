@@ -6,11 +6,16 @@ import csv
 
 lpas = {}
 for row in csv.DictReader(open("var/organisation.csv")):
+    row["class"] = "mid-grey"
     lpas[row["local-planning-authority"]] = row
 
-background = "#505a5f";
+# TBD: use performance-dataset
+lpas["E60000167"]["class"] = "grey"
+lpas["E60000331"]["class"] = "turquoise"
+
 legends = [
-    { "name": "black", "colour": background, "legend": "No data expected" },
+    { "name": "black", "colour": "#0b0c0c", "legend": "Unknown LPA" },
+    { "name": "mid-grey", "colour": "#505a5f", "legend": "No data expected" },
     { "name": "grey", "colour": "#b1b4b6", "legend": "Project is paused" },
     { "name": "red", "colour": "#d4351c", "legend": "Data is missing" },
     { "name": "amber", "colour": "#f47738", "legend": "Data has outstanding issues" },
@@ -18,14 +23,13 @@ legends = [
     { "name": "green", "colour": "#85994b", "legend": "Data meets the standard" },
 ]
 
-counts = {
-    "black": 201,
-    "grey": 1,
-    "red": 60,
-    "amber": 60,
-    "turquoise": 60,
-    "green": 5,
-}
+counts = {}
+for row in legends:
+    counts[row["name"]] = 0
+
+for lpa, l in lpas.items():
+    counts[l["class"]] += 1
+
 total = sum(counts.values())
 
 print("""<!doctype html>
@@ -48,7 +52,7 @@ body {
 
 .choropleth svg {
  width: 100%;
- fill: """ + background + """;
+ fill: 	#0b0c0c;
 }
 
 .stacked-chart {
@@ -93,18 +97,30 @@ print("""
 <div class="choropleth">
 """)
 
-pattern = re.compile(r"id=\"(?P<lpa>\w+)")
+re_id = re.compile(r"id=\"(?P<lpa>\w+)")
 
 with open("lpa.svg") as f:
     for line in f.readlines():
-        if '<path id="E' in line:
-            match = pattern.search(line)
 
+        line = line.replace(' fill-rule="evenodd"', '')
+        line = line.replace('class="polygon ', 'class="')
+
+        match = re_id.search(line)
+        if match:
             lpa = match.group("lpa")
-            if lpa in lpas:
+
+            if lpa not in lpas:
+                counts["black"] += 1
+                name = lpa
+                _class = "black"
+            else:
                 org = lpas[lpa]
                 name = org["name"]
-                line = line.replace("/>", f"><title>{name}</title></path>")
+                _class = org.get("class", "white")
+
+        if 'class="lpa"' in line:
+            line = line.replace('class="lpa"/>', f'class="lpa {_class}"><title>{name}</title></path>')
+
         print(line, end="")
 
 
@@ -112,14 +128,17 @@ print('<div class="stacked-chart">')
 
 for item in legends:
     value = counts[item["name"]]
-    percent = 100 * value / total
-    print(f'<div class="bar {item["name"]}" style="width:{percent:.2f}%;">{value}</div>')
+    if value:
+        percent = 100 * value / total
+        print(f'<div class="bar {item["name"]}" style="width:{percent:.2f}%;">{value}</div>')
 
 print("""</div>
 <ul class="key">""")
 
 for item in legends:
-    print(f'<li class="key-item {item["name"]}">{item["legend"]}</li>')
+    value = counts[item["name"]]
+    if value:
+        print(f'<li class="key-item {item["name"]}">{item["legend"]}</li>')
 
 print("""</ul>
 </div>
