@@ -10,7 +10,7 @@ for row in csv.DictReader(open("var/organisation.csv")):
     lpas[row["local-planning-authority"]] = row
 
 
-border = "#DEE0E2"
+stroke = "#DEE0E2"
 
 # TBD: use performance-dataset
 lpas["E60000167"]["class"] = "error"
@@ -29,10 +29,10 @@ lpas["E60000331"]["class"] = "trustworthy"
 legends = [
     { "reference": "error", "colour": "#B10E1E", "name": "Error", "description": "Unknown organisation or area" },
     { "reference": "none", "colour": "#F8F8F8", "name": "No data", "description": "No data available" },
-    { "reference": "some", "colour": "#DEE0E2", "name": "Some data", "description": "Some data from a secondary source" },
-    { "reference": "exists", "colour": "#BFC1C3", "name": "Some authoritive data", "description": "Some data from the authoritive source" },
-    { "reference": "usable", "colour": "#2B8CC4", "name": "Usable data", "description": "Data from the authoritive source, usable by open digital planning" },
-    { "reference": "trustworthy", "colour": "#005EA5", "name": "Trustworthy data", "description": "Data from the authorititive source with no known issues" },
+    { "reference": "some", "colour": "#BFC1C3", "name": "Some data", "description": "Some data from a secondary source" },
+    { "reference": "exists", "colour": "#2B8CC4", "name": "Some authoritive data", "description": "Some data from the authoritive source" },
+    { "reference": "usable", "colour": "#005EA5", "name": "Usable data", "description": "Data from the authoritive source, usable by open digital planning" },
+    { "reference": "trustworthy", "colour": "#0B0C0C", "name": "Trustworthy data", "description": "Data from the authorititive source with no known issues" },
 ]
 
 counts = {}
@@ -99,7 +99,8 @@ for item in legends:
     (reference, colour) = (item["reference"], item["colour"])
     print(f".stacked-chart .bar.{reference} {{ background-color: {colour}; }}")
     print(f".key-item.{reference} {{ border-color: {colour}; }}")
-    print(f"svg path.{reference} {{ fill: {colour}; stroke: {colour}; }}")
+    print(f"svg path.{reference} {{ fill: {colour}; stroke: {stroke}; }}")
+    print(f"svg path:hover {{ opacity: 0.5; }}")
 
 
 print("""
@@ -131,7 +132,8 @@ with open("lpa.svg") as f:
                 _class = org.get("class", "white")
 
         if 'class="lpa"' in line:
-            line = line.replace('class="lpa"/>', f'class="lpa {_class}"><title>{name}</title></path>')
+            line = line.replace('<path', f'<a href="#{lpa}"><path')
+            line = line.replace('class="lpa"/>', f'class="lpa {_class}"><title>{name}</title></path></a>')
 
         print(line, end="")
 
