@@ -95,7 +95,7 @@ li.key-item {
 
 for item in legends:
     (reference, colour) = (item["reference"], item["colour"])
-    print(f".stacked-chart .bar.{reference} {{ background-color: {colour}; }}")
+    print(f".stacked-chart .bar.{reference} {{ background-color: {colour}; color: #fff }}")
     print(f".key-item.{reference} {{ border-color: {colour}; }}")
     print(f"svg path.{reference} {{ fill: {colour}; stroke: {stroke}; }}")
     print(f"svg path:hover {{ opacity: 0.5; }}")
