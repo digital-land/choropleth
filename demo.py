@@ -6,26 +6,38 @@ import csv
 
 lpas = {}
 for row in csv.DictReader(open("var/organisation.csv")):
-    row["class"] = "mid-grey"
+    row["class"] = "none"
     lpas[row["local-planning-authority"]] = row
 
+
+border = "#DEE0E2"
+
 # TBD: use performance-dataset
-lpas["E60000167"]["class"] = "grey"
-lpas["E60000331"]["class"] = "turquoise"
+lpas["E60000167"]["class"] = "error"
+lpas["E60000168"]["class"] = "none"
+lpas["E60000169"]["class"] = "some"
+lpas["E60000170"]["class"] = "exists"
+lpas["E60000171"]["class"] = "usable"
+lpas["E60000172"]["class"] = "some"
+lpas["E60000173"]["class"] = "some"
+lpas["E60000174"]["class"] = "some"
+lpas["E60000175"]["class"] = "some"
+lpas["E60000176"]["class"] = "some"
+lpas["E60000176"]["class"] = "some"
+lpas["E60000331"]["class"] = "trustworthy"
 
 legends = [
-    { "name": "black", "colour": "#0b0c0c", "legend": "Unknown LPA" },
-    { "name": "mid-grey", "colour": "#505a5f", "legend": "No data expected" },
-    { "name": "grey", "colour": "#b1b4b6", "legend": "Project is paused" },
-    { "name": "red", "colour": "#d4351c", "legend": "Data is missing" },
-    { "name": "amber", "colour": "#f47738", "legend": "Data has outstanding issues" },
-    { "name": "turquoise", "colour": "#28a197", "legend": "Data may be used by the project" },
-    { "name": "green", "colour": "#85994b", "legend": "Data meets the standard" },
+    { "reference": "error", "colour": "#B10E1E", "name": "Error", "description": "Unknown organisation or area" },
+    { "reference": "none", "colour": "#F8F8F8", "name": "No data", "description": "No data available" },
+    { "reference": "some", "colour": "#DEE0E2", "name": "Some data", "description": "Some data from a secondary source" },
+    { "reference": "exists", "colour": "#BFC1C3", "name": "Some authoritive data", "description": "Some data from the authoritive source" },
+    { "reference": "usable", "colour": "#2B8CC4", "name": "Usable data", "description": "Data from the authoritive source, usable by open digital planning" },
+    { "reference": "trustworthy", "colour": "#005EA5", "name": "Trustworthy data", "description": "Data from the authorititive source with no known issues" },
 ]
 
 counts = {}
 for row in legends:
-    counts[row["name"]] = 0
+    counts[row["reference"]] = 0
 
 for lpa, l in lpas.items():
     counts[l["class"]] += 1
@@ -84,10 +96,10 @@ li.key-item {
 """)
 
 for item in legends:
-    (name, colour) = (item["name"], item["colour"])
-    print(f".stacked-chart .bar.{name} {{ background-color: {colour}; }}")
-    print(f".key-item.{name} {{ border-color: {colour}; }}")
-    print(f"svg path.{name} {{ fill: {colour}; stroke: {colour}; }}")
+    (reference, colour) = (item["reference"], item["colour"])
+    print(f".stacked-chart .bar.{reference} {{ background-color: {colour}; }}")
+    print(f".key-item.{reference} {{ border-color: {colour}; }}")
+    print(f"svg path.{reference} {{ fill: {colour}; stroke: {colour}; }}")
 
 
 print("""
@@ -110,9 +122,9 @@ with open("lpa.svg") as f:
             lpa = match.group("lpa")
 
             if lpa not in lpas:
-                counts["black"] += 1
+                counts["error"] += 1
                 name = lpa
-                _class = "black"
+                _class = "error"
             else:
                 org = lpas[lpa]
                 name = org["name"]
@@ -127,18 +139,18 @@ with open("lpa.svg") as f:
 print('<div class="stacked-chart">')
 
 for item in legends:
-    value = counts[item["name"]]
+    value = counts[item["reference"]]
     if value:
         percent = 100 * value / total
-        print(f'<div class="bar {item["name"]}" style="width:{percent:.2f}%;">{value}</div>')
+        print(f'<div class="bar {item["reference"]}" style="width:{percent:.2f}%;">{value}</div>')
 
 print("""</div>
 <ul class="key">""")
 
 for item in legends:
-    value = counts[item["name"]]
+    value = counts[item["reference"]]
     if value:
-        print(f'<li class="key-item {item["name"]}">{item["legend"]}</li>')
+        print(f'<li class="key-item {item["reference"]}">{item["name"]}</li>')
 
 print("""</ul>
 </div>
