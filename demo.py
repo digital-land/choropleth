@@ -16,7 +16,7 @@ stroke = "#DEE0E2"
 lpas["E60000168"]["class"] = "none"
 lpas["E60000169"]["class"] = "some"
 lpas["E60000172"]["class"] = "some"
-lpas["E60000173"]["class"] = "some"
+lpas["E60000173"]["class"] = "exists"
 lpas["E60000174"]["class"] = "some"
 lpas["E60000175"]["class"] = "some"
 lpas["E60000176"]["class"] = "some"
@@ -24,11 +24,11 @@ lpas["E60000176"]["class"] = "some"
 lpas["E60000331"]["class"] = "trustworthy"
 
 legends = [
-    { "reference": "trustworthy", "colour": "#0B0C0C", "name": "Trustworthy data", "description": "Data from the authorititive source with no known issues" },
-    { "reference": "usable", "colour": "#005EA5", "name": "Usable data", "description": "Data from the authoritive source, usable by open digital planning" },
-    { "reference": "exists", "colour": "#2B8CC4", "name": "Some authoritive data", "description": "Some data from the authoritive source" },
-    { "reference": "some", "colour": "#BFC1C3", "name": "Some data", "description": "Some data from a secondary source" },
-    { "reference": "none", "colour": "#F8F8F8", "name": "No data", "description": "No data available" },
+    { "reference": "trustworthy", "colour": "#0B0C0C", "name": "Trustworthy data", "description": "Authorititive data with no known issues" },
+    { "reference": "usable", "colour": "#005EA5", "name": "Usable data", "description": "Data is usable by open digital planning" },
+    { "reference": "exists", "colour": "#2B8CC4", "name": "Some authoritive data", "description": "Some data provided by the authorititive source" },
+    { "reference": "some", "colour": "#BFC1C3", "name": "Some data", "description": "Some data is available for this area" },
+    { "reference": "none", "colour": "#F8F8F8", "name": "No data", "description": "No data" },
     { "reference": "error", "colour": "#B10E1E", "name": "Error", "description": "Unknown organisation or area" },
 ]
 
@@ -97,7 +97,7 @@ for item in legends:
     print(f".stacked-chart .bar.{reference} {{ background-color: {colour}; color: #000 }}")
     print(f".key-item.{reference} {{ border-color: {colour}; }}")
     print(f"svg path.{reference} {{ fill: {colour}; stroke: {stroke}; }}")
-    print(f"svg path:hover {{ opacity: 0.5; }}")
+print(f"svg path:hover {{ fill: #ffdd00 }}")
 
 
 print("""
