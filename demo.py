@@ -13,23 +13,21 @@ for row in csv.DictReader(open("var/organisation.csv")):
 stroke = "#DEE0E2"
 
 # TBD: use performance-dataset
-lpas["E60000168"]["class"] = "none"
-lpas["E60000169"]["class"] = "some"
-lpas["E60000172"]["class"] = "some"
-lpas["E60000173"]["class"] = "exists"
-lpas["E60000174"]["class"] = "some"
-lpas["E60000175"]["class"] = "some"
-lpas["E60000176"]["class"] = "some"
-lpas["E60000176"]["class"] = "some"
 lpas["E60000331"]["class"] = "trustworthy"
+lpas["E60000168"]["class"] = "usable"
+lpas["E60000173"]["class"] = "exists"
+lpas["E60000169"]["class"] = "some"
+lpas["E60000172"]["class"] = "none"
+lpas["E60000174"]["class"] = "error"
 
+# see https://analysisfunction.civilservice.gov.uk/policy-store/data-visualisation-colours-in-charts/
 legends = [
-    { "reference": "trustworthy", "colour": "#0B0C0C", "name": "Trustworthy data", "description": "Authorititive data with no known issues" },
-    { "reference": "usable", "colour": "#005EA5", "name": "Usable data", "description": "Data is usable by open digital planning" },
-    { "reference": "exists", "colour": "#2B8CC4", "name": "Some authoritive data", "description": "Some data provided by the authorititive source" },
+    { "reference": "trustworthy", "colour": "#12436D", "name": "Trustworthy data", "description": "Authorititive data with no known issues" },
+    { "reference": "usable", "colour": "#28A197", "name": "Usable data", "description": "Data is usable by open digital planning" },
+    { "reference": "exists", "colour": "#F46A25", "name": "Some authoritive data", "description": "Some data provided by the authorititive source" },
     { "reference": "some", "colour": "#BFC1C3", "name": "Some data", "description": "Some data is available for this area" },
     { "reference": "none", "colour": "#F8F8F8", "name": "No data", "description": "No data" },
-    { "reference": "error", "colour": "#B10E1E", "name": "Error", "description": "Unknown organisation or area" },
+    { "reference": "error", "colour": "#801650", "name": "Error", "description": "Unknown organisation or area" },
 ]
 
 counts = {}
