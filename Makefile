@@ -23,6 +23,9 @@ init::
 	pip install -r requirements.txt
 	npm install svgo
 
+server::
+	python3 -m http.server
+
 clobber::
 	rm -f lpa.svg
 
