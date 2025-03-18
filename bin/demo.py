@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
 import re
-import sys
 import csv
 
 lpas = {}
-for row in csv.DictReader(open("var/organisation.csv")):
+for row in csv.DictReader(open("var/cache/organisation.csv")):
     row["class"] = "none"
     lpas[row["local-planning-authority"]] = row
 
@@ -107,7 +106,7 @@ print("""
 
 re_id = re.compile(r"id=\"(?P<lpa>\w+)")
 
-with open("lpa.svg") as f:
+with open("local-planning-authority.svg") as f:
     for line in f.readlines():
 
         line = line.replace(' fill-rule="evenodd"', '')
