@@ -1,10 +1,10 @@
-.PRECIOUS: var/%.svg var/cache/%.geojson
+.PRECIOUS: var/%.svg var/cache/%.geojson var/filtered/%.geojson
 
 SVGS=\
-	 border.svg\
-	 local-authority-district.svg\
-	 national-park.svg\
-	 local-planning-authority.svg
+	 svg/border.svg\
+	 svg/local-authority-district.svg\
+	 svg/national-park.svg\
+	 svg/local-planning-authority.svg
 
 all:: $(SVGS) index.html
 
@@ -24,11 +24,15 @@ clobber::
 clean::
 	rm -rf ./var
 
-# build SVG from dataset
-%.svg: var/%.svg Makefile svgo.js
+# build organisation svg
+#organisation.svg:
+
+
+# build boundary SVG from dataset
+svg/%.svg: var/%.svg svgo.js
 	node_modules/svgo/bin/svgo $< --config svgo.js -o $@
 
-var/%.svg:  var/simplified/%.geojson
+var/%.svg:  var/filtered/%.geojson
 	@mkdir -p $(dir $@)
 	svgis draw $< --id-field reference --crs EPSG:3857 --scale 2000 -o $@
 

@@ -5,7 +5,7 @@
     </style>
   </defs>
   <g transform="matrix(1 0 0 -1 357.261 3760.128)">
-    <g id="local-authority-district" class="dataset end-date entity entry-date name organisation-entity prefix reference start-date typology">
+    <g id="local-authority-district" class="name reference">
       <g id="E06000001">
         <path fill-rule="evenodd" d="m-68.167 3644.819.009.005-.021-.017.012.012z" class="local-authority-district"/>
         <path fill-rule="evenodd" d="m-70.602 3654.446-2.063-.829-.771-2.523-1.4-.02.756-.865-.941-1.898.367-1.174-2.364-.424 2.709-1.393 1.04 1.338.966-1.66 2.354-.445 1.157.992 1.437-1.132 1.217 1.03h1.162l.381.23-.705-.135.86 1.42-2.302 3.102.159 1.733 1.246-.647-.221.703-5.044 2.597z" class="local-authority-district"/>
