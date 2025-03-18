@@ -106,7 +106,7 @@ print("""
 
 re_id = re.compile(r"id=\"(?P<lpa>\w+)")
 
-with open("local-planning-authority.svg") as f:
+with open("svg/local-planning-authority.svg") as f:
     for line in f.readlines():
 
         line = line.replace(' fill-rule="evenodd"', '')
@@ -125,9 +125,9 @@ with open("local-planning-authority.svg") as f:
                 name = org["name"]
                 _class = org.get("class", "white")
 
-        if 'class="lpa"' in line:
+        if 'class="local-planning-authority"' in line:
             line = line.replace('<path', f'<a href="#{lpa}"><path')
-            line = line.replace('class="lpa"/>', f'class="lpa {_class}"><title>{name}</title></path></a>')
+            line = line.replace('class="local-planning-authority"/>', f'class="local-planning-authority {_class}"><title>{name}</title></path></a>')
 
         print(line, end="")
 
