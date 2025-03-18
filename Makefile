@@ -1,7 +1,12 @@
-.PRECIOUS: var/cache/%
+.PRECIOUS: var/%.svg var/cache/%.geojson
 
 SVGS=\
+	 border.svg\
+	 local-authority-district.svg\
+	 national-park.svg\
 	 local-planning-authority.svg
+
+all:: $(SVGS) index.html
 
 index.html: bin/demo.py var/cache/organisation.csv $(SVGS)
 	python3 bin/demo.py > $@
