@@ -13,8 +13,6 @@ var/lpa.geojson: var/lpa-eng.geojson filter.py
 var/lpa-eng.geojson: var/lpa-uk.geojson
 	ogr2ogr -simplify 0.01 $@ var/lpa-uk.geojson
 
-# uses ONS version, for now
-# move to use the planning.data.gov.uk dataset, with historical areas
 var/lpa-uk.geojson:
 	@mkdir -p var
 	curl -qfsL "https://files.planning.data.gov.uk/dataset/local-planning-authority.geojson" > $@
