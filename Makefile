@@ -50,7 +50,7 @@ var/%.geojson: var/simplified/%.geojson
 
 var/simplified/%.geojson: var/cache/%.geojson
 	@mkdir -p $(dir $@)
-	ogr2ogr -simplify 0.01 $@ $<
+	ogr2ogr -simplify 0.001 $@ $<
 
 # download organisations
 var/cache/organisation.csv:
