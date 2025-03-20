@@ -1,7 +1,6 @@
 .NOTINTERMEDIATE:
 
 SVGS=\
-	 svg/point.svg\
 	 svg/border.svg\
 	 svg/region.svg\
 	 svg/local-authority-district.svg\
@@ -9,11 +8,13 @@ SVGS=\
 	 svg/local-planning-authority.svg
 
 POINT_DATASETS=\
-    var/cache/local-planning-authority.csv\
+	var/cache/border.csv\
+	var/cache/region.csv\
 	var/cache/local-authority-district.csv\
-	var/cache/national-park.csv
+	var/cache/national-park.csv\
+    var/cache/local-planning-authority.csv
 
-all:: $(SVGS) index.html
+all:: $(SVGS) svg/point.svg index.html
 
 index.html: bin/demo.py var/cache/organisation.csv $(SVGS)
 	python3 bin/demo.py > $@
@@ -32,8 +33,8 @@ clean::
 	rm -rf ./var
 
 # points in England
-var/point.geojson: $(POINT_CSVS) bin/point.py
-	python bin/point.py $(POINT_CSVS) > $@
+var/point.geojson: $(POINT_DATASETS) bin/point.py var/border.geojson
+	python bin/point.py $(POINT_DATASETS) > $@
 
 # build boundary SVG from dataset
 svg/%.svg: var/%.svg svgo.js
